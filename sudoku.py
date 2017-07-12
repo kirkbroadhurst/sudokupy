@@ -1,4 +1,4 @@
-from itertools import groupby
+from itertools import groupby, chain
 import numpy as np
 
 # board = np.zeros((9,9))
@@ -7,9 +7,9 @@ board = np.loadtxt('games/002.txt')
 valid = [1,2,3,4,5,6,7,8,9]
 
 def places(game, f):
-	result = [((x,y), game[(x,y)]) for x in range(9) for y in range(9)]
+	result = (((x,y), game[(x,y)]) for x in range(9) for y in range(9))
 	if f is not None:
-		result = [list(x[1]) for x in groupby(sorted(result,key=f), f)]
+		result = (list(x[1]) for x in groupby(sorted(result,key=f), f))
 	return result
 
 def rows(game):	
@@ -23,7 +23,8 @@ def boxes(game):
 	return places(game, f)
 
 def sets(game):
-	return rows(game) + cols(game) + boxes(game)
+	#return list(rows(game)) + list(cols(game)) + list(boxes(game))
+	return chain(rows(game), cols(game), boxes(game))	
 
 def fill_empty(moveset):
 	missing = [m for m in moveset if m[1] == 0]
@@ -45,8 +46,9 @@ def iterate_moves(board):
 				again = True
 				break
 
-print (board)
 
+print (board)
 iterate_moves(board)
-
 print (board)
+
+print (list(sets(board)))
