@@ -7,9 +7,11 @@ board = np.loadtxt('games/003.txt')
 valid = [1,2,3,4,5,6,7,8,9]
 
 def places():
+	""" all the positions on a board """
 	return ((x,y) for x in range(9) for y in range(9))
 
-def squares(game, f):	
+def squares(game, f=None):
+	""" all the positions and values on the board, optionally grouped according to some function (to slice rows, cols, boxes) """ 
 	result = ((p, game[p]) for p in places())
 	return result if f is None else (list(x[1]) for x in groupby(sorted(result,key=f), f))
 
@@ -24,7 +26,6 @@ def boxes(game):
 	return squares(game, f)
 
 def sets(game):
-	#return list(rows(game)) + list(cols(game)) + list(boxes(game))
 	return chain(rows(game), cols(game), boxes(game))	
 
 def find_moves(moveset):
@@ -45,12 +46,12 @@ def make_move(board, move):
 	board[move[0]] = move[1]
 
 
-def iterate_moves(board):
+def play_game(board):
 	again = True
 	while again:
 		again, possible_moves = play_single_gaps(board)
 		if again:
-			break
+			continue
 		
 		# try to find necessary moves using known possible moves
 		moves = resolve_moves(possible_moves)
@@ -60,11 +61,13 @@ def iterate_moves(board):
 		for move in moves:
 			make_move(board, move) 
 
+
 def play_single_gaps(board):
 	"""
-	puts values in places with only one possible value
-	returns (True, None) if it did something
-	returns (False, possible_moves) if there were no single value moves
+	completes 9-value sets (rows, cols, boxes) with one missing value by putting the missing value into the empty space	
+	returns (was_move_made, possible_moves) 
+	was_move_made is True if a move was made
+	possible moves is a list of potentially valid moves within each 9-item set
 	"""
 	possible_moves = []
 	for moveset in sets(board):
@@ -73,41 +76,44 @@ def play_single_gaps(board):
 			continue
 		elif len(moves) == 1:
 			make_move(board, moves[0])
-			return True, None			
+			return True, possible_moves
 		else:
 			possible_moves += [moves]
 	return False, possible_moves
 
 
-def resolve_moves(movesets):
+def resolve_moves(possible_moves):
 	"""
-	input collections of 'possible moves' within groups/sets (rows, cols, boxes) across the board
-	resolve which 'possible moves' exist across those collections
+	possible_moves: sets of valid moves within each 9-item set (row/col/box)
+	
+	resolve which 'possible moves' are valiid across those collections
 	if there is only one possible move across collections then it is a necessary move
+	if there is no possible move across collections then something is wrong
+	if there are multiple possible moves, continue
+
+	returns set of necessary moves
 	"""
 	
 	moves = []
-
 	for place in places():
-		# get matching moves from movesets that contain this 'place'; keeping them as 'movesets' for now
-		sets = [set(m[1] for m in ms if place in m) for ms in movesets if any(place in m for m in ms)]
+		# find matching moves from each 9-item set that apply to this 'place'; get the possible values from each (drop the place)
+		sets = [set(m[1] for m in ms if place in m) for ms in possible_moves if any(place in m for m in ms)]
+
 		if not any(sets):
 			continue		
-		# print (place, list(sets))
 		
+		# find which values would be valid according to each 9-item sets' constraints
 		valid_moves = sets[0].intersection(*sets)
-		# print (valid_moves)
+		
 		if len(valid_moves) == 0:
 			raise ValueError(place)
 		elif len(valid_moves) == 1:
-			moves.append((place, valid_moves.pop()))
-			# print (moves)
-
-	# print (moves)
+			moves.append((place, valid_moves.pop()))		
+			
 	return moves
 
 
 
 print (board)
-iterate_moves(board)
+play_game(board)
 print (board)

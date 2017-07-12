@@ -1,4 +1,4 @@
-from sudoku import find_moves, resolve_moves, play_single_gaps
+from sudoku import find_moves, resolve_moves, play_single_gaps, play_game, squares
 import numpy
 
 def test_find_moves_1():
@@ -50,3 +50,18 @@ def test_play_single_gaps():
 	assert board[(0,0)] == 0
 	play_single_gaps(board)
 	assert board[(0,0)] != 0
+
+def test_game_1():
+	board = numpy.loadtxt('games/001.txt')
+	play_game(board)
+	assert all([s[1] > 0 for s in squares(board)])
+
+def test_game_2():
+	board = numpy.loadtxt('games/002.txt')
+	play_game(board)
+	assert all([s[1] > 0 for s in squares(board)])	
+
+def test_game_3():
+	board = numpy.loadtxt('games/003.txt')
+	play_game(board)
+	assert all([s[1] > 0 for s in squares(board)])		
