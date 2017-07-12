@@ -44,26 +44,44 @@ def find_moves(moveset):
 def make_move(board, move):
 	board[move[0]] = move[1]
 
+
 def iterate_moves(board):
 	again = True
 	while again:
-		again = False
-		possible_moves = []
-		for moveset in sets(board):
-			moves = find_moves(moveset)
-			if moves is None or len(moves) == 0:
-				continue
-			elif len(moves) == 1:
-				make_move(board, moves[0])
-				again = True
-				break
-			else:
-				possible_moves += [moves]
-	return possible_moves
+		again, possible_moves = play_single_gaps(board)
+		if again:
+			break
+		
+		# try to find necessary moves using known possible moves
+		moves = resolve_moves(possible_moves)
+		if any(moves):
+			again = True
+
+		for move in moves:
+			make_move(board, move) 
+
+def play_single_gaps(board):
+	"""
+	puts values in places with only one possible value
+	returns (True, None) if it did something
+	returns (False, possible_moves) if there were no single value moves
+	"""
+	possible_moves = []
+	for moveset in sets(board):
+		moves = find_moves(moveset)
+		if moves is None or len(moves) == 0:
+			continue
+		elif len(moves) == 1:
+			make_move(board, moves[0])
+			return True, None			
+		else:
+			possible_moves += [moves]
+	return False, possible_moves
+
 
 def resolve_moves(movesets):
 	"""
-	input collections of 'possible moves' within sets (rows, cols, boxes) across the board
+	input collections of 'possible moves' within groups/sets (rows, cols, boxes) across the board
 	resolve which 'possible moves' exist across those collections
 	if there is only one possible move across collections then it is a necessary move
 	"""
@@ -72,7 +90,6 @@ def resolve_moves(movesets):
 
 	for place in places():
 		# get matching moves from movesets that contain this 'place'; keeping them as 'movesets' for now
-		#placesets = filter(None, [[m for m in ms if place in m] for ms in movesets]) # if any(place in m for m in ms)]
 		sets = [set(m[1] for m in ms if place in m) for ms in movesets if any(place in m for m in ms)]
 		if not any(sets):
 			continue		
@@ -92,7 +109,5 @@ def resolve_moves(movesets):
 
 
 print (board)
-result = iterate_moves(board)
+iterate_moves(board)
 print (board)
-
-print (sorted(result))
