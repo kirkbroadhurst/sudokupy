@@ -6,21 +6,22 @@ board = np.loadtxt('games/003.txt')
 
 valid = [1,2,3,4,5,6,7,8,9]
 
-def places(game, f):
-	result = (((x,y), game[(x,y)]) for x in range(9) for y in range(9))
-	if f is not None:
-		result = (list(x[1]) for x in groupby(sorted(result,key=f), f))
-	return result
+def places():
+	return ((x,y) for x in range(9) for y in range(9))
+
+def squares(game, f):	
+	result = ((p, game[p]) for p in places())
+	return result if f is None else (list(x[1]) for x in groupby(sorted(result,key=f), f))
 
 def rows(game):	
-	return places(game, lambda x: x[0][0])
+	return squares(game, lambda x: x[0][0])
 
 def cols(game):
-	return places(game, lambda x: x[0][1])
+	return squares(game, lambda x: x[0][1])
 
 def boxes(game):
 	f = lambda x: (int(x[0][0]/3), int(x[0][1]/3))
-	return places(game, f)
+	return squares(game, f)
 
 def sets(game):
 	#return list(rows(game)) + list(cols(game)) + list(boxes(game))
@@ -47,7 +48,7 @@ def iterate_moves(board):
 	again = True
 	while again:
 		again = False
-		maybe_moves = []
+		possible_moves = []
 		for moveset in sets(board):
 			moves = find_moves(moveset)
 			if moves is None or len(moves) == 0:
@@ -57,8 +58,36 @@ def iterate_moves(board):
 				again = True
 				break
 			else:
-				maybe_moves += [moves]
-	return maybe_moves
+				possible_moves += [moves]
+	return possible_moves
+
+def resolve_moves(movesets):
+	"""
+	input collections of 'possible moves' within sets (rows, cols, boxes) across the board
+	resolve which 'possible moves' exist across those collections
+	if there is only one possible move across collections then it is a necessary move
+	"""
+	
+	moves = []
+
+	for place in places():
+		# get matching moves from movesets that contain this 'place'; keeping them as 'movesets' for now
+		#placesets = filter(None, [[m for m in ms if place in m] for ms in movesets]) # if any(place in m for m in ms)]
+		sets = [set(m[1] for m in ms if place in m) for ms in movesets if any(place in m for m in ms)]
+		if not any(sets):
+			continue		
+		# print (place, list(sets))
+		
+		valid_moves = sets[0].intersection(*sets)
+		# print (valid_moves)
+		if len(valid_moves) == 0:
+			raise ValueError(place)
+		elif len(valid_moves) == 1:
+			moves.append((place, valid_moves.pop()))
+			# print (moves)
+
+	# print (moves)
+	return moves
 
 
 
