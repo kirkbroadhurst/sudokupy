@@ -1,4 +1,5 @@
-from sudoku import find_moves, resolve_moves, play_single_gaps, play_game, squares, is_complete, make_move
+from sudoku import play_single_gaps, play_game, squares, is_complete, make_move
+from moves import find_moves, resolve_moves
 import numpy
 import pytest
 
