@@ -48,7 +48,11 @@ def find_moves(moveset):
 
 
 def make_move(board, move):
-	board[move[0]] = move[1]
+	""" put a piece on the board, LOCK IT IN REBUS """
+	if board[move[0]] == 0:
+		board[move[0]] = move[1]
+	else:
+		raise ValueError(move)
 
 
 def play_game(board):

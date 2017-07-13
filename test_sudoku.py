@@ -1,5 +1,6 @@
-from sudoku import find_moves, resolve_moves, play_single_gaps, play_game, squares, is_complete
+from sudoku import find_moves, resolve_moves, play_single_gaps, play_game, squares, is_complete, make_move
 import numpy
+import pytest
 
 def test_find_moves_1():
 	# the first item, with value 0, is 'missing'. find_moves will tell us it should be a 9.
@@ -75,3 +76,8 @@ def test_game_5():
 	board = numpy.loadtxt('games/005.txt')
 	play_game(board)
 	assert is_complete(board)		
+
+def test_make_move():
+	board = numpy.loadtxt('games/001.txt')
+	with pytest.raises(ValueError):
+		make_move(board, ((8,8),8))
