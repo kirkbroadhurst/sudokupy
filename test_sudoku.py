@@ -54,20 +54,16 @@ def test_play_single_gaps():
 def test_game_1():
 	board = numpy.loadtxt('games/001.txt')
 	play_game(board)
-	assert all([s[1] > 0 for s in squares(board)])
 	assert is_complete(board)
 
 def test_game_2():
 	board = numpy.loadtxt('games/002.txt')
 	play_game(board)
-	assert all([s[1] > 0 for s in squares(board)])	
 	assert is_complete(board)
 
 def test_game_3():
 	board = numpy.loadtxt('games/003.txt')
 	play_game(board)
-	assert all([s[1] > 0 for s in squares(board)])
-	assert all([s[1] > 0 for s in squares(board)])
 	assert is_complete(board)
 
 def test_game_4():
