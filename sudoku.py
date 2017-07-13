@@ -113,6 +113,15 @@ def resolve_moves(possible_moves):
 	return moves
 
 
+def is_complete(board):
+	""" return True is board is complete and error free """
+	valid_set = set(valid)
+	for s in sets(board):
+		if set(m[1] for m in s) != valid_set:
+			return False
+	return True
+
+
 
 print (board)
 play_game(board)
