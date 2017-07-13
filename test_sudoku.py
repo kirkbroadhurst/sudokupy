@@ -69,3 +69,13 @@ def test_game_3():
 	assert all([s[1] > 0 for s in squares(board)])
 	assert all([s[1] > 0 for s in squares(board)])
 	assert is_complete(board)
+
+def test_game_4():
+	board = numpy.loadtxt('games/004.txt')
+	play_game(board)
+	assert is_complete(board)	
+
+def test_game_5():
+	board = numpy.loadtxt('games/005.txt')
+	play_game(board)
+	assert is_complete(board)		
