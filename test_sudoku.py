@@ -76,7 +76,13 @@ def test_game_4():
 def test_game_5():
 	board = numpy.loadtxt('games/005.txt')
 	play_game(board)
-	assert is_complete(board)		
+	assert is_complete(board)
+
+def test_game_6():
+	board = numpy.loadtxt('games/006.txt')
+	play_game(board)
+	print (board)
+	assert is_complete(board)
 
 def test_make_move():
 	board = numpy.loadtxt('games/001.txt')
