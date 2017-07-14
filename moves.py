@@ -4,7 +4,9 @@ functions that analyze positions/values and identify appropriate moves
 
 from navigation import *
 
+
 valid = [1,2,3,4,5,6,7,8,9]
+
 
 def find_moves(moveset):
     """ finds any move(s) with value 0 
@@ -29,8 +31,7 @@ def resolve_moves(possible_moves):
     if there are multiple possible moves, continue
 
     returns set of necessary moves
-    """
-    
+    """    
     moves = []
     for place in places():
         # find matching moves from each 9-item set that apply to this 'place'; get the possible values from each (drop the place)

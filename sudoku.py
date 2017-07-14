@@ -1,10 +1,14 @@
+"""
+main module for playing sudoku
+"""
+
+import numpy as np
 from navigation import *
 from moves import find_moves, resolve_moves, valid
-import numpy as np
 
 
 def make_move(board, move):
-    """ put a piece on the board, LOCK IT IN REBUS """
+    """ put a piece on the board, LOCK IT IN REGIS """
     if board[move[0]] == 0:
         board[move[0]] = move[1]
     else:
