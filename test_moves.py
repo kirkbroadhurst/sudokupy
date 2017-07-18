@@ -1,6 +1,5 @@
 from moves import find_moves, resolve_moves
-#import numpy
-#import pytest
+
 
 def test_find_moves_1():
     # the first item, with value 0, is 'missing'. find_moves will tell us it should be a 9.
@@ -44,3 +43,4 @@ def test_resolve_moves_confounding_0():
     possible_moves = [[((0,0), 1), ((0,0), 2), ((1,1), 1), ((1,1), 2)], [((0,0), 1), ((0,0), 2), ((0,0), 3), ((1,1), 1), ((1,1), 2)]]
     moves = resolve_moves(possible_moves)
     assert len(moves) == 0
+
