@@ -44,7 +44,7 @@ def test_resolve_moves_confounding_0():
     moves = resolve_moves(possible_moves)
     assert len(moves) == 0
 
-def test_find_impossible_moves():
+def test_find_impossible_moves_1():
     # the first item, with value 0, is 'missing'. find_impossible_moves will tell us it cannot be [1,2,3,4,5,6,7,8].
     state = [((i,i), i) for i in range(9)]
     moves = find_impossible_moves(state)
@@ -52,3 +52,22 @@ def test_find_impossible_moves():
     assert len(moves) == 1
     assert moves[0][0] == (0,0)
     assert moves[0][1] == [1,2,3,4,5,6,7,8]
+
+def test_find_impossible_moves_2():
+    state = [((i,i), 0 if i%2==0 else i) for i in range(9)]
+    moves = find_impossible_moves(state)
+
+    assert len(moves) == 5
+    for i, m in enumerate(moves):
+        assert m[0] == (2*i,2*i)
+        assert m[1] == [1,3, 5, 7]
+
+def test_find_impossible_moves_3():
+    state = [((i,i), 0) for i in range(9)]
+    moves = find_impossible_moves(state)
+
+    assert len(moves) == 9
+    for i, m in enumerate(moves):
+        assert m[0] == (i, i)
+        # there are no impossible moves in this case
+        assert m[1] == []
