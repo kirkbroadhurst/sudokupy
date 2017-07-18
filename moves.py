@@ -21,6 +21,13 @@ def find_possible_moves(moveset):
         return [(missing[0][0], values)]
 
 
+def find_impossible_moves(moveset):
+    """ finds empty spaces and reports which values cannot be placed there
+    """
+    values = [v[1] for v in moveset if v[1] != 0]
+    return [(v[0], values) for v in moveset if v[1] == 0]
+
+
 def resolve_moves(possible_moves):
     """
     possible_moves: sets of potentially valid moves within each 9-item set (row/col/box)
