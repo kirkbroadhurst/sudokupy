@@ -71,3 +71,21 @@ def test_find_impossible_moves_3():
         assert m[0] == (i, i)
         # there are no impossible moves in this case
         assert m[1] == []
+
+def test_resolve_impossible_moves_1():
+    possible_moves = [[((0,0), 1), ((0,0), 2)], [((0,0), 1), ((0,0), 2), ((0,0), 3)]]
+    impossible_moves = [((0,0), [2, 3])]
+    moves = resolve_moves(possible_moves, impossible_moves)
+    assert len(moves) == 1
+
+def test_resolve_impossible_moves_2():
+    possible_moves = [[((0,0), 1), ((0,0), 2), ((1,1), 1), ((1,1), 2)], [((0,0), 1), ((0,0), 2), ((0,0), 3), ((1,1), 1), ((1,1), 2)]]
+    impossible_moves = [((0,0), [1, 5, 6, 7, 8])]
+    moves = resolve_moves(possible_moves, impossible_moves)
+    assert len(moves) == 1
+
+def test_resolve_impossible_moves_3():
+    possible_moves = [[((0,0), 1), ((0,0), 2), ((1,1), 1), ((1,1), 2)], [((0,0), 1), ((0,0), 2), ((0,0), 3), ((1,1), 1), ((1,1), 2)]]
+    impossible_moves = [((0,0), [1, 5, 6, 7, 8]), ((1,1), [1, 3, 5, 6, 7, 8, 9])]
+    moves = resolve_moves(possible_moves, impossible_moves)
+    assert len(moves) == 2

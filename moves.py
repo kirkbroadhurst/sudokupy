@@ -38,7 +38,7 @@ def flatten_impossible_moves(movesets):
     return [(x, set([val for yy in y for val in yy[1]])) for (x,y) in g]
 
 
-def resolve_moves(possible_moves, impossible_moves=None):
+def resolve_moves(possible_moves, impossible_moves=[]):
     """
     possible_moves: sets of potentially valid moves within each 9-item set (row/col/box)
     
@@ -48,8 +48,10 @@ def resolve_moves(possible_moves, impossible_moves=None):
     if there are multiple possible moves, continue
 
     returns set of necessary moves
-    """    
+    """
     moves = []
+    impossible = dict(impossible_moves)
+
     for place in places():
         # find matching moves from each 9-item set that apply to this 'place'; get the possible values from each (drop the place)
         sets = [set(m[1] for m in ms if place in m) for ms in possible_moves if any(place in m for m in ms)]
@@ -59,7 +61,9 @@ def resolve_moves(possible_moves, impossible_moves=None):
         
         # find which values would be valid according to each 9-item sets' constraints
         valid_moves = sets[0].intersection(*sets)
-        
+        if place in impossible:
+            valid_moves = valid_moves - set(impossible[place])
+
         if len(valid_moves) == 0:
             raise ValueError(place)
         elif len(valid_moves) == 1:

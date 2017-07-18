@@ -18,7 +18,7 @@ def test_play_single_gaps_2():
 	result, possible, impossible = play_single_gaps(board)
 	assert not result
 	assert len(possible) == 27
-	assert len(impossible) == 27
+	assert len(impossible) == 81 # these are flattened into individual squares
 
 def test_make_move():
     board = numpy.loadtxt('games/001.txt')

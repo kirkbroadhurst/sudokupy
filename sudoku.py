@@ -4,7 +4,7 @@ main module for playing sudoku
 
 import numpy as np
 from navigation import *
-from moves import find_possible_moves, find_impossible_moves, resolve_moves, valid
+from moves import find_possible_moves, find_impossible_moves, flatten_impossible_moves, resolve_moves, valid
 
 
 def make_move(board, move):
@@ -24,7 +24,7 @@ def play_game(board):
             continue
         
         # try to find necessary moves using known possible moves
-        moves = resolve_moves(possible_moves)
+        moves = resolve_moves(possible_moves, impossible_moves)
         if any(moves):
             again = True
 
@@ -55,7 +55,7 @@ def play_single_gaps(board):
             return True, [], []
         else:
             possible_moves += [moves]
-    return False, possible_moves, impossible_moves
+    return False, possible_moves, flatten_impossible_moves(impossible_moves)
 
 
 def is_complete(board):
