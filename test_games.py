@@ -29,5 +29,12 @@ def test_game_5():
 def test_game_6():
     board = numpy.loadtxt('games/006.txt')
     play_game(board)
-    print (board)
     assert is_complete(board)
+
+'''
+def test_game_7():
+    board = numpy.loadtxt('games/007.txt')
+    play_game(board)
+    print(board)
+    assert is_complete(board)
+'''
