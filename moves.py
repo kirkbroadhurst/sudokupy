@@ -3,7 +3,7 @@ functions that analyze positions/values and identify appropriate moves
 """
 
 from navigation import *
-
+from itertools import groupby
 
 valid = [1,2,3,4,5,6,7,8,9]
 
@@ -26,6 +26,16 @@ def find_impossible_moves(moveset):
     """
     values = [v[1] for v in moveset if v[1] != 0]
     return [(v[0], values) for v in moveset if v[1] == 0]
+
+
+def flatten_impossible_moves(movesets):
+    """ movesets: a collection of items each representing the impossible moves 
+        (e.g. (3,3) can't be a 4,5, or 6) for each of the 9-item sets
+    
+    flattens these by unioning the impossible moves for each location.
+    """
+    g = groupby(sorted((m for ms in movesets for m in ms), key=lambda x: x[0]), lambda x: x[0])
+    return [(x, set([val for yy in y for val in yy[1]])) for (x,y) in g]
 
 
 def resolve_moves(possible_moves):
