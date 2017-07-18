@@ -1,4 +1,4 @@
-from sudoku import play_single_gaps, play_game, squares, is_complete, make_move
+from sudoku import play_single_gaps, make_move
 import numpy
 import pytest
 

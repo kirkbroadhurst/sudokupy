@@ -9,7 +9,7 @@ valid = [1,2,3,4,5,6,7,8,9]
 
 
 def find_moves(moveset):
-    """ finds any move(s) with value 0 
+    """ finds any move(s) with value 0 in a single set of squares
         returns a list of potential moves, i.e. ((x,y), value)
     """
     values = [v for v in valid if v not in [m[1] for m in moveset if m[1] != 0]]
@@ -23,9 +23,9 @@ def find_moves(moveset):
 
 def resolve_moves(possible_moves):
     """
-    possible_moves: sets of valid moves within each 9-item set (row/col/box)
+    possible_moves: sets of potentially valid moves within each 9-item set (row/col/box)
     
-    resolve which 'possible moves' are valiid across those collections
+    resolve which 'possible moves' are valid across those collections
     if there is only one possible move across collections then it is a necessary move
     if there is no possible move across collections then something is wrong
     if there are multiple possible moves, continue
