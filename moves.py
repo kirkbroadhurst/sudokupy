@@ -8,7 +8,7 @@ from navigation import *
 valid = [1,2,3,4,5,6,7,8,9]
 
 
-def find_moves(moveset):
+def find_possible_moves(moveset):
     """ finds any move(s) with value 0 in a single set of squares
         returns a list of potential moves, i.e. ((x,y), value)
     """

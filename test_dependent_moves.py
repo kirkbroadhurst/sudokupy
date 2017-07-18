@@ -1,7 +1,7 @@
 import numpy
 from sudoku import play_single_gaps
 from navigation import sets
-from moves import find_moves, resolve_moves
+from moves import find_possible_moves, resolve_moves
 
 
 def test_resolve_game_1():
@@ -17,7 +17,7 @@ def test_resolve_game_2():
     board = numpy.loadtxt('games/008.txt')
     movesets = []
     for moveset in sets(board):
-        movesets.append(find_moves(moveset))
+        movesets.append(find_possible_moves(moveset))
     
     resolved_moves = resolve_moves(movesets)
 
