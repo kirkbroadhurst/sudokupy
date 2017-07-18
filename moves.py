@@ -38,7 +38,7 @@ def flatten_impossible_moves(movesets):
     return [(x, set([val for yy in y for val in yy[1]])) for (x,y) in g]
 
 
-def resolve_moves(possible_moves):
+def resolve_moves(possible_moves, impossible_moves=None):
     """
     possible_moves: sets of potentially valid moves within each 9-item set (row/col/box)
     

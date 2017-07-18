@@ -6,7 +6,7 @@ from moves import find_possible_moves, find_impossible_moves, resolve_moves, fla
 
 def test_resolve_game_1():
     board = numpy.loadtxt('games/008.txt')
-    again, possible_moves = play_single_gaps(board)
+    again, possible_moves, impossible_moves = play_single_gaps(board)
 
     resolved_moves = resolve_moves(possible_moves)
     assert len(resolved_moves) > 1
@@ -35,5 +35,5 @@ def test_flatten_impossible_moves_1():
     d = dict(flat_moves)
     # spot check some for validation
     assert d[(4,0)] == set([2, 1, 4, 5, 7, 8, 9])
-    assert d[(4,3)] == set([1,2, 4, 6, 9])
+    assert d[(4,3)] == set([1, 2, 4, 6, 9])
     assert d[(7,2)] == set([1, 2, 4, 5, 6, 7, 8, 9])

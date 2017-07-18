@@ -3,12 +3,22 @@ import numpy
 import pytest
 
 
-def test_play_single_gaps():
+def test_play_single_gaps_1():
     # this is a game with only one missing move
     board = numpy.loadtxt('games/001.txt')
     assert board[(0,0)] == 0
-    play_single_gaps(board)
+    result, possible, impossible = play_single_gaps(board)
     assert board[(0,0)] != 0
+    assert result
+    assert possible == []
+    assert impossible == []
+
+def test_play_single_gaps_2():
+	board = numpy.loadtxt('games/empty.txt')
+	result, possible, impossible = play_single_gaps(board)
+	assert not result
+	assert len(possible) == 27
+	assert len(impossible) == 27
 
 def test_make_move():
     board = numpy.loadtxt('games/001.txt')
